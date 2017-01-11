@@ -12,6 +12,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet var restaurantNameLabel   :UILabel!
     @IBOutlet var recommendedLabel      :UILabel!
+    @IBOutlet var foodRatingLabel       :UILabel!
+    @IBOutlet var serviceRatingLabel    :UILabel!
+    @IBOutlet var overallRatingLabel    :UILabel!
     @IBOutlet var userNameTextField     :UITextField!
     @IBOutlet var userReviewTextView    :UITextView!
     @IBOutlet var overallRatingSlider   :UISlider!
@@ -31,9 +34,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         print("Name: \(userName)")
         print("Would you recommend this to a friend: " + getRecommended(recommendedSwitch))
-        print("Food Rating (0-5)⭐: " + getFoodRating(foodRatingSegControl))
-        print("Service Rating (0-5)⭐: \(getServiceRating(serviceRatingStepper))⭐")
-        print("Overall Rating (0-5)⭐: \(getOverallRating(overallRatingSlider))⭐")
+        print("Food Rating (1-5)⭐: " + getFoodRating(foodRatingSegControl))
+        print("Service Rating (1-5)⭐: \(getServiceRating(serviceRatingStepper))⭐")
+        print("Overall Rating (1-5)⭐: \(getOverallRating(overallRatingSlider))⭐")
         print("Review: \(userReview)")
         
     }
@@ -44,6 +47,18 @@ class ViewController: UIViewController, UITextFieldDelegate {
         } else {
             recommendedLabel.text = "No"
         }
+    }
+    
+    @IBAction func valueChanged(segControl: UISegmentedControl) {
+        foodRatingLabel.text = getFoodRating(segControl)
+    }
+    
+    @IBAction func valueChanged(stepper: UIStepper) {
+        serviceRatingLabel.text = "\(getServiceRating(stepper))⭐"
+    }
+    
+    @IBAction func valueChanged(slider: UISlider) {
+        overallRatingLabel.text = "\(getOverallRating(slider))⭐"
     }
     
     //MARK: - Get Values Methods
@@ -60,12 +75,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         return segControl.titleForSegment(at: segControl.selectedSegmentIndex)!
     }
     
-    func getServiceRating(_ stepper: UIStepper) -> Double {
-        return stepper.value
+    func getServiceRating(_ stepper: UIStepper) -> Int {
+        return Int(stepper.value)
     }
     
-    func getOverallRating(_ slider: UISlider) -> Float {
-        return slider.value
+    func getOverallRating(_ slider: UISlider) -> Int {
+        return Int(slider.value)
     }
     
     //MARK: - Text Delegate Methods
@@ -80,10 +95,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         recommendedSwitch.isOn = false
-        valueChanged(rSwitch: recommendedSwitch)
-        //overallRatingSlider.value = 0
-        //foodRatingSegControl.selectedSegmentIndex = 0
-        //serviceRatingStepper.value = 0
+        overallRatingSlider.value = 1
+        foodRatingSegControl.selectedSegmentIndex = 0
+        serviceRatingStepper.value = 1
     }
 
     override func didReceiveMemoryWarning() {
