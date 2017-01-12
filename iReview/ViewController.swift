@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
     @IBOutlet var restaurantNameLabel   :UILabel!
     @IBOutlet var recommendedLabel      :UILabel!
@@ -65,9 +65,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func getRecommended(_ rSwitch: UISwitch) -> String {
         if rSwitch.isOn {
-            return "Yes I would recommend this establishment"
+            return "Yes"
         } else {
-            return "No I would not recommend this establishment"
+            return "No"
         }
     }
     
@@ -89,7 +89,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-        
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+    
     //MARK: - Life Cycle Methods
         
     override func viewDidLoad() {
